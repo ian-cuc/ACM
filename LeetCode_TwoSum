@@ -1,0 +1,60 @@
+/*Given an array of integers, find two numbers such that they add up to a specific target number.
+
+The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.
+
+You may assume that each input would have exactly one solution.
+
+Input: numbers={2, 7, 11, 15}, target=9
+Output: index1=1, index2=2
+*/
+
+
+
+import java.util.Hashtable; 
+public class Solution {
+    public int[] twoSum(int[] numbers, int target) {
+        
+        int a[]=new int[2];
+        Hashtable<Integer ,Integer> hashTable=new Hashtable<Integer, Integer>();
+        for(int i=0;i<numbers.length;i++)
+        {
+           Integer tmp= hashTable.get(numbers[i]);
+           if(tmp==null)
+           {
+               hashTable.put(numbers[i],i);
+           }
+           Integer tmp1=hashTable.get(target-numbers[i]);
+           if(tmp1!=null&&tmp1<i)
+           {
+               a[0]=tmp1+1;
+               a[1]=i+1;
+               return a;
+           }
+        }
+        return a;
+        
+    }
+}
+//tips:如果我们简单的采用两层for循环的方式，将耗费O(n*2)的时间，太耗时
+//其实我觉得，数组在这里也算是一个简单的最简单的hash表，只不过数组的key,vaule和本题中的hashtable恰好是相反的。而很不幸，我们要求的
+//是数组里面的key，所以经过一个简单地转化，把key变成vaule，vaule变成key，这样就可以达到我们的目的了，通过对value的直接寻址，就找到了
+//原来的key
+
+
+
+//Hashtable和Hashmap的区别
+/*一、实现
+hastmap是一个接口， 是map接口的子接口，是Hashtable的轻量级实现（非线程安全的实现）
+Hashtable继承自Dictionary类，而HashMap是Java1.2引进的Map interface的一个实现。
+二、线程安全性
+1 HashMap不是线程安全的   多个线程访问时，HashMap 就必须为之提供外同步。
+
+2   HashTable是线程安全的一个Collection。Hashtable的方法是Synchronize的，多个线程访问Hashtable时，不需要自己为它的方法实现同步
+三、允许null        
+HashMap允许将null作为一个entry的key或者value，而Hashtable不允许。
+四、效率
+HashMap由于非线程安全，效率上可能高于Hashtable。
+Hashtable和HashMap采用的hash/rehash算法都大概一样，所以性能不会有很大的差异。
+五、关于contains方法
+HashMap把Hashtable的contains方法去掉了，改成containsvalue和containsKey。因为contains方法容易让人引起误解
+*/

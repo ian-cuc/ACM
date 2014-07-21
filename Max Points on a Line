@@ -1,0 +1,70 @@
+/**
+ *Max Points on a Line Total Accepted: 13921 Total Submissions: 130280 My Submissions
+ *Given n points on a 2D plane, find the maximum number of points that lie on the same straight line.
+ */
+ 
+ /**
+ * Definition for a point.
+ * class Point {
+ *     int x;
+ *     int y;
+ *     Point() { x = 0; y = 0; }
+ *     Point(int a, int b) { x = a; y = b; }
+ * }
+ */
+public class Solution {
+    public int maxPoints(Point[] points) {
+       int maxLine = 0;
+    Map<String, Integer> pointCounts = new HashMap<String, Integer>();
+        for (int i=0; i<(points.length); i++) {
+            int coincident = 0;
+            pointCounts.clear();
+            for (int j=i+1; j<points.length; j++) {
+                String slope;
+                if (points[i].x==points[j].x && points[i].y==points[j].y) {
+                    coincident++;
+                    continue;
+                } else if (points[i].x == points[j].x) {
+                    slope = "N";
+                } else if (points[i].y == points[j].y) {
+                    slope = "0,0"; // logically we don't need this, but in practice i find that we do
+                } else {
+                        slope=slopeToString((points[i].y-points[j].y),(points[i].x                         -points[j].x));
+                }
+
+                if (pointCounts.containsKey(slope))
+                    pointCounts.put(slope, pointCounts.get(slope)+1);
+                else
+                    pointCounts.put(slope, new Integer(1));
+            }//end for
+            maxLine = Math.max(maxLine, 1+coincident+maxValue(pointCounts));
+        }// end for
+
+        return maxLine;
+    }
+    
+    private int maxValue(Map<String, Integer> StringIntMap) {
+        int max = 0;
+        Set<String> keys = StringIntMap.keySet();
+        Iterator iter = keys.iterator();
+        while (iter.hasNext())
+        max = Math.max(max, StringIntMap.get(iter.next()));
+        return max;
+    }
+    
+    private String slopeToString(int x ,int y)
+    {
+        int r=gcd(x,y);
+        x=x/r;
+        y=x/r;
+        String aa=x+","+y;
+        return aa;
+    }
+    int gcd(int m,int n)
+    {
+        if (m % n == 0)
+        {return n;}
+        else
+        {return gcd(n,m % n);}
+    }
+}

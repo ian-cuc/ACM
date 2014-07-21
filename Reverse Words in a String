@@ -1,0 +1,51 @@
+//https://oj.leetcode.com/problems/reverse-words-in-a-string/
+/*Reverse Words in a String Total Accepted: 21883 Total Submissions: 157273 My Submissions
+Given an input string, reverse the string word by word.
+
+For example,
+Given s = "the sky is blue",
+return "blue is sky the".
+
+click to show clarification.
+*/
+
+import java.util.Stack;  
+
+
+public class Solution {
+    public String reverseWords(String s) {
+        
+        //ArrayList<String>  AL=new ArrayList<String>();
+        StringBuilder   sb=new StringBuilder();
+        Stack<Character> sk = new Stack<Character>();
+        s.trim();
+        
+        for(int i=s.length()-1;i>=0;i--)
+        {
+          
+            if(s.charAt(i)==' ')
+            {
+                 while(!sk.isEmpty())
+                 {
+                     sb=sb.append(sk.pop());
+                 }   
+             
+             if(sb.length()>0&&sb.charAt(sb.length()-1)!=' ')
+             {
+                 sb.append(' ');
+             }
+
+                continue;
+            }
+           sk.push(s.charAt(i));
+          
+            
+        }
+        while(!sk.isEmpty())
+         {
+           sb=sb.append(sk.pop());
+         }
+         return sb.toString().trim();
+        
+    }
+}

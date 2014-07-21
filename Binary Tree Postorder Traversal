@@ -1,0 +1,105 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    vector<int> intVector;
+    stack<TreeNode *> dir;
+    stack<int> tags;
+    public:
+    vector<int> postorderTraversal(TreeNode *root) {
+        TreeNode *top;
+        
+        if(root!=NULL) {dir.push(root);tags.push(0);}
+        else{ return intVector;}
+        
+                while(dir.top()->left!=NULL)
+                  {
+                      dir.push(dir.top()->left);
+                      tags.push(0);
+                  }
+                  
+        while(!dir.empty())
+        {
+            if(dir.top()->right&&tags.top()!=1)
+            {
+                tags.pop();
+                tags.push(1);
+                
+                dir.push(dir.top()->right);
+                tags.push(0);
+                while(dir.top()->left!=NULL)
+                {
+                    dir.push(dir.top()->left);
+                    tags.push(0);
+                }
+            }
+            else{ intVector.push_back(dir.top()->val);dir.pop();tags.pop();}
+        }
+        return intVector;
+                  
+        // while(!dir.empty())
+        // {
+        // if(tags.top==0){
+        //         if(dir.top()->left()!=NULL)
+        //         {
+        //           while(dir.top()->left()!=NULL)
+        //           {
+        //               dir.push(dir.top()->left());
+        //               tags.push(-1);
+        //           }
+                        
+        //         }
+        //               else if(top->right()!=NULL)
+        //         {
+        //               dir.push(top->right());
+        //               tags.push(1);
+        //         }
+        //           else{
+        //               intVector.push_back(dir.pop()->val);tags.pop();
+        //         }
+        // }
+        // if(tags.top()==-1)
+        // { 
+        //   intVector.push_back(dir.pop()->val);tags.pop();
+        //   top=dir.top();
+        //   if(top->right()!=NULL)
+        //   {
+        //       dir.push(top->right());
+        //       tags.push(1);
+        //   }
+        // }
+        // if(tags.top()==1)
+        // { 
+        //         if(dir.top()->left()!=NULL)
+        //         {
+        //           while(dir.top()->left()!=NULL)
+        //           {
+        //               dir.push(dir.top()->left());
+        //               tags.push(-1);
+        //           }
+                        
+        //         }
+        //               else if(top->right()!=NULL)
+        //         {
+        //               dir.push(top->right());
+        //               tags.push(1);
+        //         }
+        //           else{
+        //               intVector.push_back(dir.pop()->val);tags.pop();
+        //         }
+          
+        // }
+        // }
+        
+            
+        
+    }
+    
+};

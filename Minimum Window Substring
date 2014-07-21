@@ -1,0 +1,92 @@
+/**
+Given a binary tree, return the postorder traversal of its nodes' values.
+
+For example:
+Given binary tree {1,#,2,3},
+   1
+    \
+     2
+    /
+   3
+return [3,2,1].
+*/
+
+class Solution {
+public:
+    string minWindow(string S, string T) {
+        int lengthT=T.length();
+        int lengthS=S.length();
+        int low=0;int high=0;int tag=0;
+        int scharnum[128]={0};
+        int tcharnum[128]={0};
+        int min=0;int l=lengthS;
+        /*Input:	"cabwefgewcwaefgcf", "cae"
+Output:	"aefgc"
+Expected:	"cwae"
+*/
+        
+        for(int i=0;i<lengthT;i++)
+        {
+            tcharnum[T[i]]+=1;
+        }//求出T中各个元素的个数，放入数组；
+        
+        for(int j=0;j<lengthS;j++)
+        {
+            if(scharnum[S[j]]<tcharnum[S[j]])//
+            {
+                scharnum[S[j]]+=1;
+                tag++;
+                high=j;
+                if(high-low+1<l&&tag==lengthT)
+                {
+                    min=low;
+                    l=high-low+1;
+                }
+            }
+            else{
+                if(S[low]==S[j])//如果s[j]和最低的元素一模一样，并且，s[low]的个数已经超出的时候,low前移一位
+                {
+                    high=j;
+                    low++;
+                    while(low<j)
+                    {
+                        if(scharnum[S[low]]>tcharnum[S[low]])//如果后来的元素在子串中得个数超过了T，减去这个元素的个数，low++
+                        {
+                            scharnum[S[low]]-=1;
+                            low++;
+                        }
+                        else //如果没有超过
+                        {
+                            if(tcharnum[S[low]]==0)//但是这个元素在T中不存在
+                            {
+                                low++;
+                            }
+                            else{
+                                if(high-low+1<l&&tag==lengthT)
+                                {
+                                    min=low;
+                                    l=high-low+1;
+                                }
+                                break;//这个元素在T中存在，那么跳出循环。
+
+                            } 
+                        }
+                        
+                    }
+                }
+                else//如果不一样
+                {
+                    if(tcharnum[S[j]]!=0)//并且在T中这个元素存在
+                    {
+                    scharnum[S[j]]+=1;
+                    high=j;
+                    }
+                }
+            }
+        }   
+         if (tag<lengthT)
+             return "";
+         
+        return S.substr(min,l); 
+    }
+};
